@@ -65,36 +65,44 @@ def discografia():
     global name
     global ano
     global discografia
-    banda = input('Qual nome da banda deseja conhecer os discos?' )
-    total = int(input('Quantos discos deseja ver? '))
+    global anoT
+    global anoL
+    banda = input('Qual nome da banda deseja conhecer os discos?')
+    disco = requests.get(f'https://theaudiodb.com/api/v1/json/1/discography.php?s={banda}').json()
     name = []
-    ano = []
-    for i in range(total):
-        disco = requests.get(f'https://theaudiodb.com/api/v1/json/1/discography.php?s={banda}').json()
-        nomeAlbum = disco['album'][i]['strAlbum']
-        anoLancamento = disco['album'][i]['intYearReleased']
-        name.append(nomeAlbum)
-        ano.append(anoLancamento)
+    anoT = []
+    for nome, ano in disco.items():
+        for i in ano:
+            album = i['strAlbum']
+            anoL = i['intYearReleased']
+            name.append(album)
+            anoT.append(anoL)
 
-        discografia = {'Nome do álbum': [name],
-                        'Ano de Lançamento': [ano]}
+            discografia = {'Nome do Artísta/Banda': [banda],
+                           'Nome do álbum':[name],
+                           'Ano de Lançamento': [anoT]
+                           }
+
+
+
 
         discografia = pd.DataFrame(discografia)
         db = client['MÚSICA']
         collections = db['DISCOGRAFIA']
         collections.insert_many(discografia.to_dict('Results'))
 
-    return print(f""" Aqui estão as informações sobre sua busca:
-                        Nome do Álbum: {name},
-                        Ano de Lançamento: {ano}""")
-
+    return print(f"""
+                            'Nome do Artísta/Banda':{banda}
+                           'Nome do álbum': {name}
+                           'Ano de Lançamento': {anoT}
+    """)
 
 
 print('Welcome to the Music')
 print('Este é um projeto de consulta de Api de Música')
 print('Temos duas opções para você consultar')
 opcao = int(input("""
-[1] - Bandas/Artista 
+[1] - Bandas/Artista
 [2] - Discografia
 R: """))
 if opcao == 1:
@@ -103,5 +111,4 @@ elif opcao == 2:
     discografia()
 else:
     print("Tente uma opção válida!")
-
 
