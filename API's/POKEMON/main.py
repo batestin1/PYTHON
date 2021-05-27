@@ -10,117 +10,152 @@ import requests
 import pandas as pd
 import time
 from pymongo import MongoClient
-import pymongo
-
+from pokemon import Pokemon
+from typewriter import MaquinadeEscrever
+import random
 
 #conexao
 client = MongoClient('localhost', 27017)
 
 
-# variables
-habilidades = ''
-poke = ''
-numero = ''
-tipo = ''
+# variaveis
 
 
 
-# functions
+
+
+def init():
+    global pokebola
+    global num
+    global guardar
+    global pokedex
+    num = random.randint(1, 151)
+    nome = Pokemon(num).nome
+    tipo = Pokemon(num).tipo
+    pokedex = Pokemon(num).pokedex
+    altura = Pokemon(num).altura
+    peso = Pokemon(num).peso
+    habilidades = Pokemon(num).habilidades
+    ataque = Pokemon(num).ataque
+    defesa = Pokemon(num).defesa
+    textoPok = f""" Olhe lá... que pokemon será?"""
+    print("")
+    MaquinadeEscrever(textoPok).mensagem
+    textoPok2 = f""" Parece que é um...{nome}..."""
+    print('')
+    MaquinadeEscrever(textoPok2).mensagem
+    textoPok3 = "Deseja Capturar? "
+    print('')
+    MaquinadeEscrever(textoPok3).mensagem
+    print('')
+    capturar = input('Escreva SIM ou NÃO:').upper()[0]
+    if capturar == 'S':
+        textoPegando = f"""
+                Você jogou sua pokebola!
+                Vamos ver se conseguiu capturar..."""
+        MaquinadeEscrever(textoPegando).mensagem
+        print('')
+        textoDados = f"""
+                ...
+                    ...
+                        ...
+                Você capturou!!!
+                Este são os dados sobre o pokemon que você capturou!
+                Nome: {nome},
+                Tipo: {tipo},
+                Pokedex: {pokedex},
+                Altura: {altura}m
+                Peso: {peso}k
+                Habilidade: {habilidades}
+                Nível de Ataque: {ataque}hp
+                Nível de Defesa: {defesa}hp"""
+        MaquinadeEscrever(textoDados).mensagem
+        print('')
+        print('~' * 100)
+        textoGuardar = """ Deseja guardar seu pokemon na pokedex? """
+        print('')
+        MaquinadeEscrever(textoGuardar)
+        guardar = input("Escreva SIM ou NÃO: ").upper()[0]
+        if guardar == 'S':
+
+            pokedex = {'Nome': [nome],
+                       'Tipo': [tipo],
+                       'Pokedex': [pokedex],
+                       'Altura': [altura],
+                       'Peso': [peso],
+                       'Habilidade': [habilidades],
+                       'Ataque(hp)': [ataque],
+                       'Defesa(hp)': [defesa]}
+            pokedex = pd.DataFrame(pokedex)
+            db = client['POKEMOM']
+            collections = db['POKEDEX']
+            collections.insert_many(pokedex.to_dict('Results'))
+            textoGuardado = f'{seunome} O seu pokemon está salvo na Pokedex MONGO!'
+            MaquinadeEscrever(textoGuardado)
+            print('')
+            print('~'*100)
+            repet()
+
+        else:
+            textoN = 'Obrigado por jogar!'
+            MaquinadeEscrever(textoN).mensagem
+    else:
+        textoN = 'Obrigado por jogar!'
+        MaquinadeEscrever(textoN).mensagem
+
+
+
 def intro():
+    global seunome
+    print('~' * 300)
     time.sleep(1)
-    print('~' * 35)
-    time.sleep(1)
-    print('~' * 12 + 'PyPODEX' + '~' * 16)
-    time.sleep(1)
-    print('~' * 35)
-    time.sleep(1)
-    print('~' + 'Desenvolvido por Maycon Cypriano' + '~~')
-    print('~' * 35)
-    time.sleep(1)
-    print('')
+    textoIntro = 'Welcome to PokeWord'
+    MaquinadeEscrever(textoIntro).mensagem
     print('')
     time.sleep(1)
-    print('VOCÊ ENCONTROU UM POKÉMON?')
+    print('~' * 300)
+    print('')
+    textoIntro2 = """
+    Este é o mundo dos pokemons!
+    Cada pokemon é único e especial.
+    Qual é o seu nome? """
+    print('')
+    MaquinadeEscrever(textoIntro2)
     time.sleep(1)
-    print('~' * 35)
-    main()
-    print('~' * 35)
+    print('')
+    print('~' * 300)
+    print('')
+    seunome = input('Entre com seu nome: ').upper()
+    print('')
+    print('~' * 300)
     time.sleep(1)
-    print('ESTAMOS PROCESSANDO SEU POKEMON')
-    print('~' * 35)
+    print('')
+    textointro3 = f"""
+    {seunome}, Você acaba de receber cinco pokebolas para explorar
+    este mundo maravilhoso dos pokemons.
+    Esta pronto para capturar Pokemons?"""
+    MaquinadeEscrever(textointro3)
+    print('')
+    resposta = input('Escreva SIM ou NÃO: ').upper()[0]
     time.sleep(1)
-    print('...')
-    time.sleep(1)
-    print('~' * 35)
-    time.sleep(1)
-    print('POKEMON PROCESSADO COM SUCESSO!')
-    time.sleep(1)
-    tab()
-    print('SEU POKEMON ESTA A SALVO EM NOSSA PYPODEX!')
-    time.sleep(1)
-    print('~' * 35)
-    time.sleep(1)
-    print("OBRIGADO!")
+    print('')
+    if resposta == 'S':
+        init()
+    else:
+        textoSaida = "Muito bem! obrigado por participar!"
+        MaquinadeEscrever(textoSaida).mensagem
 
+def repet():
+    global desejar
+    textoDesejar = 'Deseja jogar novamente? '
+    MaquinadeEscrever(textoDesejar).mensagem
+    print('')
+    desejar = input('Escreva SIM ou NÃO: ').upper()[0]
+    while desejar == 'S':
+        init()
 
+    print('')
+    textoN = 'Obrigado por jogar!'
+    MaquinadeEscrever(textoN).mensagem
 
-def poder(po):  # função que capta a habilidade do pokemon e o nome de seu poder
-    global habilidades
-    for i in po['abilities']:
-        habilidades = (i['ability']['name'])
-
-
-def tipo(ti):  # função que me retorna o tipo de pokemon
-    global tipo
-    for i in ti['types']:
-        tipo = (i['type']['name'])
-
-
-def numero(num):  # função que me retorna o tipo de pokemon
-    global numero
-    for i in num['game_indices']:
-        numero = (i['game_index'])
-
-
-def main():
-    global tipo
-    global habilidades
-    global poke
-    global numero
-    global pokedex
-    global quant
-
-    poke = input("REGISTRE O SEU POKEMON AGORA: ").lower()
-    api = f'https://pokeapi.co/api/v2/pokemon/{poke}'
-    res = requests.get(api)
-    po = res.json()
-    ti = res.json()
-    num = res.json()
-    poder(po)
-    numero(num)
-    tipo(ti)
-
-
-def tab():
-    global tipo
-    global habilidades
-    global poke
-    global numero
-    global pokedex
-    global quant
-    pokedex1 = {'POKÉMON': [poke],
-                   'NÚMERO': [numero],
-                   'TIPO': [tipo],
-                   'HABILIDADES': [habilidades]}
-    pokedex1 = pd.DataFrame(pokedex1)
-    db = client['Pokemon']
-    collections = db['Pokedex']
-    collections.insert_many(pokedex1.to_dict('Results'))
-
-    pokedex1.to_excel('C:\Users\Bates\Documents\Repositorios\PYTHON\API's\POKEMON\PyPodex/PyPodex.xlsx', index=False)
-
-
-
-
-if __name__== '__main__':
-    intro()
+intro()

@@ -7,7 +7,7 @@ print('-*-'*30)
 n = int(input('Quantos termos você quer mostrar?'))
 
 n1 = 0
-n2 = 1
+n2 = 2
 print('-*-'*30)
 print(f'{n1} -> {n2} ->', end='')
 cont = 3
