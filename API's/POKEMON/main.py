@@ -78,7 +78,8 @@ def init():
         guardar = input("Escreva SIM ou NÃO: ").upper()[0]
         if guardar == 'S':
 
-            pokedex = {'Nome': [nome],
+            pokedex = {'Treinador': [seunome],
+                       'Pokemon': [nome],
                        'Tipo': [tipo],
                        'Pokedex': [pokedex],
                        'Altura': [altura],
@@ -87,7 +88,7 @@ def init():
                        'Ataque(hp)': [ataque],
                        'Defesa(hp)': [defesa]}
             pokedex = pd.DataFrame(pokedex)
-            db = client['POKEMOM']
+            db = client['POKEMON']
             collections = db['POKEDEX']
             collections.insert_many(pokedex.to_dict('Results'))
             textoGuardado = f'{seunome} O seu pokemon está salvo na Pokedex MONGO!'
@@ -131,9 +132,9 @@ def intro():
     time.sleep(1)
     print('')
     textointro3 = f"""
-    {seunome}, Você acaba de receber cinco pokebolas para explorar
+    {seunome}, Você acaba de receber uma pokebola para explorar
     este mundo maravilhoso dos pokemons.
-    Esta pronto para capturar Pokemons?"""
+    Esta pronto para capturar pokemons?"""
     MaquinadeEscrever(textointro3)
     print('')
     resposta = input('Escreva SIM ou NÃO: ').upper()[0]
