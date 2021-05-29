@@ -17,13 +17,6 @@ import random
 #conexao
 client = MongoClient('localhost', 27017)
 
-
-# variaveis
-
-
-
-
-
 def init():
     global pokebola
     global num
@@ -159,4 +152,5 @@ def repet():
     textoN = 'Obrigado por jogar!'
     MaquinadeEscrever(textoN).mensagem
 
-intro()
+if __name__== '__main__':
+    intro()
