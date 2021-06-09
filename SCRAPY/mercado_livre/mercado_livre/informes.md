@@ -1,0 +1,5 @@
+'Este projeto � um web scrapping usando a biblioteca scrapy' 
+'Seu site de pesquisa � o Mercado livre' 
+'Este � o link de pesquisa:  https://mercadolivre.com' 
+'Desenvolvido por Maycon Cypriano' 
+'Para rodar o projeto, vai at� a pasta SPIDERS e digite o comando scrapy crawl e o nome do arquivo a ser executado' 

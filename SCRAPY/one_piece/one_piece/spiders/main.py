@@ -1,3 +1,5 @@
+
+
 import scrapy
 
 import pandas as pd
@@ -49,10 +51,12 @@ class MainSpider(scrapy.Spider):
         except:
             dados = response.xpath('//div[@class="pi-data-value pi-font"]/text()').getall()
             nomeJapones = dados[0]
-            nomePortugues = dados[2]
-            apelido = dados[22]
-            situacao = dados[26]
-            aniversario = dados[32]
+            nomePortugues = dados[1]
+            apelido = dados[17]
+            situacao = dados[18]
+            aniversario = dados[21]
+            print(dados)
+            print(apelido)
 
             onepiece = {
                 'Nome Original': nomeJapones,
