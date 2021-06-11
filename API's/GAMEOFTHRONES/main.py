@@ -64,10 +64,10 @@ def processar():
         print("Obrigado!")
 
 def personagem2():
-    num = 1511
+    num = 0
 
 
-    for i in range(1511, 1994):
+    for i in range(2000):
         num = num + 1
         people = requests.get(f'https://anapioficeandfire.com/api/characters/{num}').json()
         # variaveis dos personagens
@@ -88,8 +88,9 @@ def personagem2():
                    'Genero': [genero],
                    'Ano de Nascimento': [born],
                    'Identificador': [url]}
-
         persona = pd.DataFrame(persona)
+
+
         db = client['GAMEOFTHRONES']
         collections = db['PERSONAGENS']
         collections.insert_many(persona.to_dict('Results'))

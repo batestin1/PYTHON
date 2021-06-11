@@ -94,7 +94,7 @@ def init():
             textoN = 'Obrigado por jogar!'
             MaquinadeEscrever(textoN).mensagem
     else:
-        textoN = 'Obrigado por jogar!'
+        textoN = 'Tudo bem, vamos ver o que acontece agora...'
         MaquinadeEscrever(textoN).mensagem
 
 
